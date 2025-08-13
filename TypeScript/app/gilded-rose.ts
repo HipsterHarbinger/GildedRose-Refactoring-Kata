@@ -10,17 +10,103 @@ export class Item {
   }
 }
 
-export class GildedRose {
-  items: Array<Item>;
+class WrappedItem {
+  item: Item
+  minQuality: number = 0
+  maxQuality: number = 50
 
-  constructor(items = [] as Array<Item>) {
-    this.items = items;
+  constructor(item: Item) {
+    this.item = item
+  }
+
+  incrementValue(amount: number) {
+    this.item.quality = Math.min(this.item.quality + amount, this.maxQuality)
+  }
+
+  decrementValue(amount: number) {
+    this.item.quality = Math.max(this.item.quality - amount, this.minQuality)
   }
 
   updateQuality() {
-    this.oldImplementation();
+    this.item.sellIn -= 1
+    this.item.sellIn < 0 ? this.decrementValue(2) : this.decrementValue(1)
+  }
+}
 
+class AgedBrie extends WrappedItem {
+  updateQuality() {
+    this.item.sellIn -= 1
+    this.item.sellIn < 0 ? this.incrementValue(2) : this.incrementValue(1)
+  }
+}
+
+class LegendaryItem extends WrappedItem {
+  updateQuality() {
+    // Nothing ever changes
+  }
+}
+
+class BackstagePasses extends WrappedItem {
+  firstLastChanceThreshold: number = 10
+  secondLastChanceThreshold: number = 5
+
+  updateQuality() {
+    this.item.sellIn -= 1
+    if (this.item.sellIn < 0) {
+      this.item.quality = 0
+    } else if (this.item.sellIn < this.secondLastChanceThreshold) {
+      this.incrementValue(3)
+    } else if (this.item.sellIn < this.firstLastChanceThreshold) {
+      this.incrementValue(2)
+    } else {
+      this.incrementValue(1)
+    }
+  }
+}
+
+class ConjuredItem extends WrappedItem {
+  updateQuality() {
+    this.item.sellIn -= 1
+    this.item.sellIn < 0 ? this.decrementValue(4) : this.decrementValue(2) 
+  }
+}
+
+let legendaryItems = ['Sulfuras, Hand of Ragnaros', 'Thunderfury, Blessed Blade of the Windseeker']
+
+function wrappedItemsFactory(item: Item): WrappedItem {
+  switch(true){
+    case item.name == "Aged Brie":
+      return new AgedBrie(item)
+    case legendaryItems.includes(item.name):
+      return new LegendaryItem(item)
+    case  /^Backstage pass/.test(item.name):
+      return new BackstagePasses(item)
+    case /^Conjured/.test(item.name):
+      return new ConjuredItem(item)
+    default:
+      return new WrappedItem(item)
+  }
+}
+
+export class GildedRose {
+  items: Array<Item>;
+  wrappedItems: Array<WrappedItem>
+
+  constructor(items = [] as Array<Item>) {
+    this.items = items;
+    this.wrappedItems = this.items.map((item) => wrappedItemsFactory(item))
+  }
+
+  updateQuality() {
+    // this.oldImplementation();
+    this.newImplementation();
     return this.items;
+  }
+
+  private newImplementation() {
+    for (let wrappedItem of this.wrappedItems) {
+      wrappedItem.updateQuality()
+    }
   }
 
   private oldImplementation() {

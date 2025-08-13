@@ -61,7 +61,7 @@ describe('Gilded Rose', () => {
   });
 
   it('should handle new backstage item', () => {
-    const gildedRose = new GildedRose([new Item('Backstage passes to a ABCALC123ETC concert', 3, 45)])
+    const gildedRose = new GildedRose([new Item('Backstage pass to a ABCALC123ETC concert', 12, 30)])
     const expectedDays = [
       {sellIn: 11, quality: 31},
       {sellIn: 10, quality: 32},
