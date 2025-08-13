@@ -1,0 +1,12 @@
+# Barco Interview Dev Log
+## First Impressions
+- The first obvious major bad code smell comes from the fact that behavior for each individual item is held in several nested if checks and spread across the method so understanding what the exact behavior is for each class of item is hard to follow
+- Because of this it's hard to know at a glace where you would add the code for the new feature
+- It also raises the possibility of adding a new feature accidentally modifying the behavior of a feature that has already been implemented if if checks aren't implemented correctly
+- Additionally, most of the numbers described in the requirements are hardcoded in the method so it's harder to know what the "magic numbers" represent at a glace
+- Further on the requirements, there seems to be a mismatch of what's described in the requirements vs what's implemented in the code.
+- For example, the requirements seems to describe the concept of a "backstage pass" class but it's only implemented as a single option for "Backstage passes to a TAFKAL80ETC concert". In a real world situation, I would attempt to clarify the requirements but in this case I will assume that we want to handle more passes and will include that improvement in my solution
+- Similarly, there seems to be a broader concept of "legendary items" besides just Sulfuras hinted at in the requirements (although this might be my own bias knowing World of Warcraft). There also seems to be a requirement of the quality of legendary items can be 80 where other items have a max quality of 50 but the limits are only imposed when an item is updating which legendary items never do so I'm unsure how to use that requirement. In a real world situation, I would attempt to clarify the requirements but in this case I will assume that we want to be able to handle additional legendary items and will ignore the 80 quality requirement
+
+- Before we start modifying the code, I will write some simple unit tests to wrap the existing code so we don't break anything and new unit tests for the new item class and new assumptions I'm applying to existing classes
+- Additionally, I will annotate the existing code to demonstrate the complexity of the current method
