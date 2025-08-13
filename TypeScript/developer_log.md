@@ -10,3 +10,8 @@
 
 - Before we start modifying the code, I will write some simple unit tests to wrap the existing code so we don't break anything and new unit tests for the new item class and new assumptions I'm applying to existing classes
 - Additionally, I will annotate the existing code to demonstrate the complexity of the current method
+
+## Second Step
+- Next, I think it would be helpful to demonstrate the issues with the current design by attempting to add the new feature. Having annotated the existing feature, I've done a lot of the mental load already but the implementation will be spread throughout the loop and will be relatively simple compared to trying to add a feature in a real life example
+
+- Conjured items (or just conjured mana cakes) are now handled but it has a lot of the same issues of having to find the multiple places we need to put the code related to conjured items and add new quality floor checks. I'll also extract the existing code into its own method to prep for including my idea for a refactor

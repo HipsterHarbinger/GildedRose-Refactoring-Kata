@@ -18,6 +18,12 @@ export class GildedRose {
   }
 
   updateQuality() {
+    this.oldImplementation();
+
+    return this.items;
+  }
+
+  private oldImplementation() {
     for (let i = 0; i < this.items.length; i++) {
       // Handle all items that don't get better with time
       if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
@@ -26,15 +32,20 @@ export class GildedRose {
           // Check for Sulfuras (it does not ever change)
           if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
             // Decrement value in normal cases (regular items only so far)
-            this.items[i].quality = this.items[i].quality - 1
+            this.items[i].quality = this.items[i].quality - 1;
+            if (this.items[i].name == 'Conjured Mana Cake') {
+              if (this.items[i].quality > 0) {
+                this.items[i].quality = this.items[i].quality - 1;
+              }
+            }
           }
         }
-      // Handle all items that get better with time (aged brie and backstage passes)
+        // Handle all items that get better with time (aged brie and backstage passes)
       } else {
         // Quality ceiling check
         if (this.items[i].quality < 50) {
           // Increment quality value
-          this.items[i].quality = this.items[i].quality + 1
+          this.items[i].quality = this.items[i].quality + 1;
           // Handle backstage passes
           if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
             // Handle first backstage pass quality threshold
@@ -42,7 +53,7 @@ export class GildedRose {
               // Another quality ceiling check
               if (this.items[i].quality < 50) {
                 // Increment value again
-                this.items[i].quality = this.items[i].quality + 1
+                this.items[i].quality = this.items[i].quality + 1;
               }
             }
             // Handle second backstage pass quality threshold
@@ -50,7 +61,7 @@ export class GildedRose {
               // Another quality ceiling check
               if (this.items[i].quality < 50) {
                 // Increment value again
-                this.items[i].quality = this.items[i].quality + 1
+                this.items[i].quality = this.items[i].quality + 1;
               }
             }
           }
@@ -71,24 +82,27 @@ export class GildedRose {
               // Checking for Sulfuras since it doesn't change
               if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
                 // Decrement quality of item that hasn't been filtered yet (only regular items in this case)
-                this.items[i].quality = this.items[i].quality - 1
+                this.items[i].quality = this.items[i].quality - 1;
+                if (this.items[i].name == 'Conjured Mana Cake') {
+                  if (this.items[i].quality > 0) {
+                    this.items[i].quality = this.items[i].quality - 1;
+                  }
+                }
               }
             }
             // Handling backstage passes, should set value to zero if sellIn date has passed
           } else {
-            this.items[i].quality = this.items[i].quality - this.items[i].quality
+            this.items[i].quality = this.items[i].quality - this.items[i].quality;
           }
           // Handle Aged Brie
         } else {
           // Quality ceiling check
           if (this.items[i].quality < 50) {
             // Increment quality
-            this.items[i].quality = this.items[i].quality + 1
+            this.items[i].quality = this.items[i].quality + 1;
           }
         }
       }
     }
-
-    return this.items;
   }
 }
